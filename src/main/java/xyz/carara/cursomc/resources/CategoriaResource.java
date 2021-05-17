@@ -1,9 +1,14 @@
 package xyz.carara.cursomc.resources;
 
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.carara.cursomc.domain.Categoria;
+import xyz.carara.cursomc.services.CategoriaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +17,15 @@ import java.util.List;
 @RequestMapping(value = "/categorias")
 public class CategoriaResource {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Categoria> listar(){
-        Categoria ca1 = new Categoria(1, "informatica");
-        Categoria ca2 = new Categoria(2, "asdasdasdas");
+    @Autowired
+    private CategoriaService categoriaService;
 
-        List<Categoria> lista = new ArrayList<>();
-        lista.add(ca1);
-        lista.add(ca2);
+    @RequestMapping(value="/{id}",method = RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable Integer id){
 
-        return lista;
+        Categoria categoria = categoriaService.buscar(id);
+
+        return ResponseEntity.ok().body(categoria);
     }
 
 
